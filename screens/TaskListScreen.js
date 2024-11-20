@@ -4,6 +4,36 @@ import { CheckBox } from 'react-native-elements';
 
 const TaskListScreen = ({ navigation, route }) => {
   const [tasks, setTasks] = useState([
+    {
+      id: '1',
+      title: 'Complete React Native Tutorial',
+      deadline: '2024-12-10',
+      completed: false,
+    },
+    {
+      id: '2',
+      title: 'Buy groceries',
+      deadline: '2024-11-25',
+      completed: false,
+    },
+    {
+      id: '3',
+      title: 'Finish project report',
+      deadline: 'No due date',
+      completed: true,
+    },
+    {
+      id: '4',
+      title: 'Clean the house',
+      deadline: '2024-11-20',
+      completed: true,
+    },
+    {
+      id: '5',
+      title: 'Walk the dog',
+      deadline: 'No due date',
+      completed: false,
+    }
   ]);
 
   useEffect(() => {
