@@ -1,26 +1,32 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+import { collection, addDoc } from 'firebase/firestore';
+import { FIREBASE_STORAGE } from '../firebaseConfig';
 
 const CreateNewTaskScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [deadline, setDeadline] = useState('');
   const [hasDueDate, setHasDueDate] = useState(false);
 
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     if (!title.trim()) {
       Alert.alert('Validation', 'Title is required to add a task.');
       return;
     }
 
     const newTask = {
-      id: Date.now().toString(),
       title,
       deadline: hasDueDate && deadline.trim() ? deadline : 'No due date',
       completed: false,
     };
 
-    navigation.navigate('TaskList', { newTask });
+    try {
+      const docRef = await addDoc(collection(FIREBASE_STORAGE, 'tasks'), newTask);
+      navigation.navigate('TaskList', { newTask: { id: docRef.id, ...newTask } });
+    } catch (error) {
+      console.error("Error adding task:", error);
+    }
   };
 
   return (
@@ -40,15 +46,15 @@ const CreateNewTaskScreen = ({ navigation }) => {
         />
         <Text>Has due date?</Text>
       </View>
-        <Text>Deadline:</Text>
-            <TextInput
-            style={styles.input}
-            value={deadline}
-            onChangeText={setDeadline}
-            placeholder="Enter deadline (YYYY-MM-DD)"
-            editable={hasDueDate}
-            selectTextOnFocus={hasDueDate}
-        />
+      <Text>Deadline:</Text>
+      <TextInput
+        style={styles.input}
+        value={deadline}
+        onChangeText={setDeadline}
+        placeholder="Enter deadline (YYYY-MM-DD)"
+        editable={hasDueDate}
+        selectTextOnFocus={hasDueDate}
+      />
       <Button title="Add Task" onPress={handleAddTask} />
     </View>
   );
