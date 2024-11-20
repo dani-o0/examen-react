@@ -32,12 +32,14 @@ const CreateNewTaskScreen = ({ navigation }) => {
         onChangeText={setTitle}
         placeholder="Enter task title"
       />
-      <CheckBox
-        title="Has due date?"
-        checked={hasDueDate}
-        onPress={() => setHasDueDate(!hasDueDate)}
-        containerStyle={styles.checkboxContainer}
-      />
+      <View style={{flexDirection: "row", alignItems: "center"}}>
+        <CheckBox
+          checked={hasDueDate}
+          onPress={() => setHasDueDate(!hasDueDate)}
+          containerStyle={styles.checkboxContainer}
+        />
+        <Text>Has due date?</Text>
+      </View>
         <Text>Deadline:</Text>
             <TextInput
             style={styles.input}
